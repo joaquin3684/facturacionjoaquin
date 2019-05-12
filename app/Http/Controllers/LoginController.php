@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\services\ML\AuthMLService;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -42,5 +43,11 @@ class LoginController extends Controller
         $token = JWTAuth::getToken();
         return JWTAuth::decode($token);
 
+    }
+
+    public function ml(Request $request)
+    {
+        $serv = new AuthMLService();
+        $serv->auth();
     }
 }

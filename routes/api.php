@@ -12,7 +12,7 @@ Route::get('prueba', function(){
 });
 
 Route::post('login', 'LoginController@login');
-
+Route::get('loginML', 'LoginController@ml');
 
 Route::group(['middleware' => ['permisos', 'jwt.auth']], function() {
 
@@ -132,9 +132,6 @@ Route::group(['middleware' => ['permisos', 'jwt.auth']], function() {
     Route::post('estadistica/eficienciaExterno', 'EstadisticaController@eficienciaExterno');
     Route::post('estadistica/cantidadVentasPorObraSocial', 'EstadisticaController@cantidadVentasPorObraSocial');
     Route::get('estadistica/indicadorVentasPresentadasDelMes', 'EstadisticaController@indicadorDelMes');
-
-
-
 
 
     //CAJA
