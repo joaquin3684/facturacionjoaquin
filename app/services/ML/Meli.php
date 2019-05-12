@@ -1,4 +1,5 @@
 <?php
+namespace App\services\ML;
 
 class Meli {
     /**
