@@ -83,7 +83,7 @@
                 </div>
 
                 <div class="links">
-                    <a href="https://facturacionjoaquin.herokuapp.com/loginML">Login ML</a>
+                    <a {{$meli->getAuthUrl("https://facturacionjoaquin.herokuapp.com",Meli::$AUTH_URL['MLA'])}}>Login ML</a>
                     <a href="https://laracasts.com">Laracasts</a>
                     <a href="https://laravel-news.com">News</a>
                     <a href="https://forge.laravel.com">Forge</a>
