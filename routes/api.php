@@ -13,7 +13,7 @@ Route::get('prueba', function(){
 
 Route::post('login', 'LoginController@login');
 Route::get('loginML', 'LoginController@ml');
-Route::get('autenticar/{codigo}', 'LoginController@authorizar');
+Route::get('autenticar/{code}', 'LoginController@authorizar');
 
 Route::group(['middleware' => ['permisos', 'jwt.auth']], function() {
 
