@@ -25,11 +25,11 @@ class AuthMLService
 
         $user = $meli->authorize($codigo, "https://facturacionjoaquin.herokuapp.com/autenticar");
         // Now we create the sessions with the authenticated user
-        $access_token = $user['body']->access_token;
+        $access_token = $user['body']['access_token'];
         //$_SESSION['expires_in'] = time() + $user['body']->expires_in;
         //$_SESSION['refresh_token'] = $user['body']->refresh_token;
         $params = array('access_token' => $access_token);
         return $meli->get('/users/me', $params);
-        
+
     }
 }
