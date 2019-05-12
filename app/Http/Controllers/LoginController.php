@@ -51,4 +51,10 @@ class LoginController extends Controller
         return $serv->auth();
 
     }
+
+    public function authorizar($codigo)
+    {
+        $serv = new AuthMLService();
+        return $serv->autenticar($codigo);
+    }
 }
