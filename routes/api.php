@@ -188,7 +188,7 @@ return DB::transaction(function(){
 });
 
 Route::get('prueba', function(){
-   
+
 
     return 1;
 });
