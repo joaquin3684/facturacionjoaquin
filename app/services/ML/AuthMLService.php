@@ -23,7 +23,7 @@ class AuthMLService
     {
         $meli = new Meli('2382179841161472', 'X6U4B4gZKELFsY739dANIwJ1qFuD5Bo4');
 
-        $user = $meli->authorize($_GET["code"], "https://facturacionjoaquin.herokuapp.com");
+        $user = $meli->authorize($codigo, "https://facturacionjoaquin.herokuapp.com");
         // Now we create the sessions with the authenticated user
         $access_token = $user['body']->access_token;
         //$_SESSION['expires_in'] = time() + $user['body']->expires_in;
