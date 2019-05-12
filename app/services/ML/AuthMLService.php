@@ -7,7 +7,8 @@
  */
 
 namespace App\services\ML;
-require 'Meli.php';
+use Meli;
+
 
 
 class AuthMLService
