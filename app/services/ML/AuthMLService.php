@@ -30,6 +30,6 @@ class AuthMLService
         //$_SESSION['refresh_token'] = $user['body']->refresh_token;
         //$params = array('access_token' => $access_token);
         //return $meli->get('/users/me', $params);
-        return $user['body'];
+        return $user;
     }
 }
