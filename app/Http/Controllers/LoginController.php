@@ -52,9 +52,9 @@ class LoginController extends Controller
 
     }
 
-    public function authorizar($code)
+    public function authorizar(Request $request)
     {
         $serv = new AuthMLService();
-        return $serv->autenticar($code);
+        return $serv->autenticar($request->code);
     }
 }
