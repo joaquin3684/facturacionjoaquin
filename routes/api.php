@@ -190,7 +190,7 @@ return DB::transaction(function(){
 Route::get('prueba', function(){
 
 
-    return 1;
+    return "la concha de tu madres";
 });
 
 Route::post('login', 'LoginController@login');
