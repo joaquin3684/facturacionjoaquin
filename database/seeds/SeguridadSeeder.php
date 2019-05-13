@@ -16,9 +16,8 @@ class SeguridadSeeder extends Seeder
 
         Db::transaction(function(){
 
-            $user = factory(App\User::class)->create([ 'nombre' => 'PRUEBA', 'password' => Hash::make('PRUEBA')]);
+            $user = factory(App\User::class)->create([ 'nombre' => 'prueba', 'password' => Hash::make('prueba')]);
 
-            $this->call(ObrasSocialesSeeder::class);
             $this->call(PerfilesSeeder::class);
 
             $user->perfiles()->attach(1);

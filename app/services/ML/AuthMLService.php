@@ -15,7 +15,7 @@ class AuthMLService
     public function auth()
     {
         $meli = new Meli('2382179841161472', 'X6U4B4gZKELFsY739dANIwJ1qFuD5Bo4');
-        $redirectUrl = $meli->getAuthUrl("https://facturacionjoaquin.herokuapp.com/autenticar/",Meli::$AUTH_URL['MLA']); //  Don't forget to change the $AUTH_URL value to match your user's Site Id.
+        $redirectUrl = $meli->getAuthUrl("https://facturacionjoaquin.herokuapp.com/autenticar",Meli::$AUTH_URL['MLA']); //  Don't forget to change the $AUTH_URL value to match your user's Site Id.
         return $redirectUrl;
     }
 
@@ -23,7 +23,7 @@ class AuthMLService
     {
         $meli = new Meli('2382179841161472', 'X6U4B4gZKELFsY739dANIwJ1qFuD5Bo4');
 
-        $user = $meli->authorize($codigo, "https://facturacionjoaquin.herokuapp.com/autenticar/");
+        $user = $meli->authorize($codigo, "https://facturacionjoaquin.herokuapp.com/autenticar");
         // Now we create the sessions with the authenticated user
         $access_token = $user['body']->access_token;
         //$_SESSION['expires_in'] = time() + $user['body']->expires_in;

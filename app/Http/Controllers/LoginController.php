@@ -27,7 +27,7 @@ class LoginController extends Controller
         $perfiles = $user->perfiles->map(function ($p){ return $p->nombre;});
         try {
             // attempt to verify the credentials and create a token for the user
-            if (! $token = JWTAuth::customClaims(['permisos' => $permisos, 'perfiles' => $perfiles, 'user_id' => $user->id, 'nombre' => $user->nombre, 'id_empresa'])->fromUser($user)) {
+            if (! $token = JWTAuth::customClaims(['permisos' => $permisos, 'perfiles' => $perfiles, 'user_id' => $user->id, 'nombre' => $user->nombre, 'id_empresa' => $user->id_empresa])->fromUser($user)) {
                 return response()->json(['success' => false, 'error' => 'We cant find an account with this credentials. Please make sure you entered the right information and you have verified your email address.'], 401);
             }
         } catch (JWTException $e) {

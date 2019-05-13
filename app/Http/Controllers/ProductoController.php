@@ -29,9 +29,9 @@ class ProductoController extends Controller
         });
     }
 
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
-        DB::transaction(function () use ($request){
+        DB::transaction(function () use ($request, $id){
             $this->productoService->update(
                 $request['nombre'],
                 $request['descripcion'],
@@ -39,7 +39,7 @@ class ProductoController extends Controller
                 $request['ptoReposicion'],
                 $request['idMl'],
                 $request['idEmpresa'],
-                $request['id']
+                $id
             );
         });
     }
@@ -49,15 +49,16 @@ class ProductoController extends Controller
         return $this->productoService->find($id);
     }
 
-    public function all()
+    public function all(Request $request)
     {
-        return $this->productoService->all();
+
+        return $this->productoService->all($request->id_empresa);
     }
 
-    public function delete(Request $request)
+    public function delete($id)
     {
-        DB::transaction(function () use ($request){
-            $this->productoService->delete($request['id']);
+        DB::transaction(function () use ($id){
+            $this->productoService->delete($id);
         });
     }
 }
