@@ -51,8 +51,7 @@ class ProductoController extends Controller
 
     public function all(Request $request)
     {
-
-        return $this->productoService->all($request->id_empresa);
+        return $this->productoService->all($request['idEmpresa']);
     }
 
     public function delete($id)

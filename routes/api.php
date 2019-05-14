@@ -38,9 +38,11 @@ Route::group(['middleware' => ['permisos', 'jwt.auth']], function() {
     Route::post('producto', 'ProductoController@store');
     Route::put('producto/{id}', 'ProductoController@update');
     Route::delete('producto/{id}', 'ProductoController@delete');
-    Route::get('producto/{id}', 'ProductoController@find');
     Route::get('producto/all', 'ProductoController@all');
+    Route::get('producto/{id}', 'ProductoController@find');
 
     // FACTURA
+
+
 
 });
