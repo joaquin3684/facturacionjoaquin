@@ -18,7 +18,8 @@ $factory->define(App\Factura::class, function (Faker\Generator $faker) {
         'ml' => false,
         'numero' => $faker->randomNumber(6),
         'fecha' => \Carbon\Carbon::today()->toDateString(),
-        'id_empresa' => 1
+        'id_empresa' => 1,
+        'entregado' => false
     ];
 
 });

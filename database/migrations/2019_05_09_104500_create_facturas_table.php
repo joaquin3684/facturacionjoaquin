@@ -27,6 +27,7 @@ class CreateFacturasTable extends Migration
             $table->integer('numero');
             $table->boolean('facturado');
             $table->boolean('ml');
+            $table->boolean('entregado');
             $table->date('fecha');
             $table->integer('id_empresa')->unsigned();
             $table->foreign('id_empresa')->references('id')->on('empresas');

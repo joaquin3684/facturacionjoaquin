@@ -13,6 +13,7 @@ use App\Producto;
 
 class ProductoService
 {
+
     public function store($nombre, $descripcion, $importe, $ptoReposicion, $idMl, $idEmpresa)
     {
         return Producto::create([

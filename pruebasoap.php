@@ -1,4 +1,5 @@
 <?php
+
 # Author: Gerardo Fisanotti - DvSHyS/DiOPIN/AFIP - 13-apr-07
 # Function: Get an authorization ticket (TA) from AFIP WSAA
 # Input:
@@ -31,6 +32,7 @@ function CreateTRA($SERVICE)
   $TRA->addChild('service',$SERVICE);
   $TRA->asXML('TRA.xml');
 }
+
 #==============================================================================
 # This functions makes the PKCS#7 signature using TRA as input file, CERT and
 # PRIVATEKEY to sign. Generates an intermediate file and finally trims the 

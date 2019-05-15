@@ -43,6 +43,12 @@ Route::group(['middleware' => ['permisos', 'jwt.auth']], function() {
 
     // FACTURA
 
+    Route::post('factura', 'FacturaController@store');
+    Route::put('factura/{id}', 'FacturaController@update');
+    Route::delete('factura/{id}', 'FacturaController@delete');
+    Route::get('factura/all/{fechaDesde}/{fechaHasta}', 'FacturaController@all');
+    Route::get('factura/{id}', 'FacturaController@find');
+
 
 
 });
