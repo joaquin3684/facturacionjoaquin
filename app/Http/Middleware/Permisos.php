@@ -29,7 +29,8 @@ class Permisos
         $pantalla = $path[1];
         $userId = JWTAuth::decode($token)['user_id'];
         $idEmpresa = JWTAuth::decode($token)['id_empresa'];
-        $request->request->add(['userId' => $userId]);
+
+        $request->request->add(['userId' => 1]);
         $request->request->add(['idEmpresa' => $idEmpresa]);
 
         foreach($permisos as $permiso)

@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\MeliMiddleware;
 use App\Http\Middleware\Permisos;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
@@ -63,6 +64,7 @@ class Kernel extends HttpKernel
 
 
         'jwt.refresh' => 'Tymon\JWTAuth\Middleware\RefreshToken',
-        'permisos' => Permisos::class
+        'permisos' => Permisos::class,
+        'meli' => MeliMiddleware::class
     ];
 }

@@ -47,14 +47,14 @@ class LoginController extends Controller
 
     public function ml(Request $request)
     {
-        $serv = new AuthMLService();
+        $serv = new AuthMLService($request['meli']);
         return $serv->auth();
 
     }
 
     public function authorizar(Request $request)
     {
-        $serv = new AuthMLService();
+        $serv = new AuthMLService($request['meli']);
         return $serv->autenticar($request->code, $request);
 
     }

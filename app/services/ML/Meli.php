@@ -1,6 +1,10 @@
 <?php
 namespace App\services\ML;
 
+use App\services\UsuarioService;
+use App\User;
+use Carbon\Carbon;
+
 class Meli {
     /**
      * @version 2.0.0
@@ -42,6 +46,9 @@ class Meli {
     protected $redirect_uri;
     protected $access_token;
     protected $refresh_token;
+    private $user;
+    private $userService;
+
     /**
      * Constructor method. Set all variables to connect in Meli
      *
@@ -50,12 +57,16 @@ class Meli {
      * @param string $access_token
      * @param string $refresh_token
      */
-    public function __construct($client_id, $client_secret, $access_token = null, $refresh_token = null) {
-        $this->client_id = $client_id;
-        $this->client_secret = $client_secret;
+
+    public function __construct( $user=null, $access_token = null, $refresh_token = null) {
+        $this->client_id = '2382179841161472';
+        $this->client_secret = 'X6U4B4gZKELFsY739dANIwJ1qFuD5Bo4';
         $this->access_token = $access_token;
         $this->refresh_token = $refresh_token;
+        $this->userService = new UsuarioService();
+        $this->user = $user;
     }
+
     /**
      * Return an string with a complete Meli login url.
      * NOTE: You can modify the $AUTH_URL to change the language of login
@@ -63,12 +74,14 @@ class Meli {
      * @param string $redirect_uri
      * @return string
      */
+
     public function getAuthUrl($redirect_uri, $auth_url) {
         $this->redirect_uri = $redirect_uri;
         $params = array("client_id" => $this->client_id, "response_type" => "code", "redirect_uri" => $redirect_uri);
         $auth_uri = $auth_url."/authorization?".http_build_query($params);
         return $auth_uri;
     }
+
     /**
      * Executes a POST Request to authorize the application and take
      * an AccessToken.
@@ -77,6 +90,7 @@ class Meli {
      * @param string $redirect_uri
      *
      */
+
     public function authorize($code, $redirect_uri) {
         if($redirect_uri)
             $this->redirect_uri = $redirect_uri;
@@ -227,6 +241,7 @@ class Meli {
      * @return mixed
      */
     public function execute($path, $opts = array(), $params = array(), $assoc = false) {
+        $this->checkToken($params);
         $uri = $this->make_path($path, $params);
         $ch = curl_init($uri);
         curl_setopt_array($ch, self::$CURL_OPTS);
@@ -237,6 +252,30 @@ class Meli {
         curl_close($ch);
 
         return $return;
+    }
+
+    public function checkToken($params)
+    {
+        if(array_key_exists('access_token', $params)) {
+            $expiracion = Carbon::createFromFormat('Y-m-d H:m:s', $this->user->expires_in);
+            if ($expiracion->greaterThan(Carbon::today())) {
+                $request = $this->refreshAccessToken();
+
+                {
+                    $params['access_token'] = $this->access_token;
+                    $this->userService->update(
+                        $this->user->nombre,
+                        $this->user->email,
+                        $this->user->pefiles->map(function ($perfil) {return $perfil->id;})->toArray(),
+                        $this->user->id_empresa,
+                        $this->access_token,
+                        $this->refresh_token,
+                        Carbon::today()->addSeconds($request['body']->expires_in)->toDateTimeString(),
+                        $this->user->id
+                    );
+                }
+            }
+        }
     }
     /**
      * Check and construct an real URL to make request

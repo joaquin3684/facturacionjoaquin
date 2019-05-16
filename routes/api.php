@@ -12,11 +12,13 @@ Route::get('prueba', function(){
 });
 
 Route::post('login', 'LoginController@login');
-Route::group(['middleware' => 'web'], function () {
 
-    Route::get('loginML', 'LoginController@ml');
-    Route::get('autenticar', 'LoginController@authorizar');
-    Route::get('ordenes', 'ML\OrdenController@ordenes');
+Route::group(['middleware' => 'permisos', 'meli'], function () {
+
+    Route::get('ml/loginML', 'LoginController@ml');
+    Route::get('ml/autenticar', 'LoginController@authorizar');
+    Route::get('ml/ordenes', 'ML\OrdenController@ordenes');
+
 });
 
 Route::group(['middleware' => ['permisos', 'jwt.auth']], function() {
