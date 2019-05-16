@@ -14,15 +14,14 @@ class CreateSessionsTable extends Migration
     public function up()
     {
         Schema::create('sessions', function (Blueprint $table) {
-            $table->increments('id')->unique();
+            $table->increments('id');
             $table->unsignedInteger('user_id')->nullable();
             $table->string('ip_address', 45)->nullable();
             $table->text('user_agent')->nullable();
-            $table->text('payload');
+
             $table->text('token');
             $table->text('refresh_token');
             $table->text('expires_in');
-            $table->integer('last_activity');
         });
     }
 
