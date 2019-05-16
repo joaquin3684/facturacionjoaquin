@@ -16,7 +16,7 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::get('loginML', 'LoginController@ml');
     Route::get('autenticar', 'LoginController@authorizar');
-    Route::get('ordenes', 'ML/OrdenController@ordenes');
+    Route::get('ordenes', 'ML\OrdenController@ordenes');
 });
 
 Route::group(['middleware' => ['permisos', 'jwt.auth']], function() {
