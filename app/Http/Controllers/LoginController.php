@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\services\ML\AuthMLService;
+use App\services\UsuarioService;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -55,7 +56,11 @@ class LoginController extends Controller
     public function authorizar(Request $request)
     {
         $serv = new AuthMLService($request['meli']);
-        return $serv->autenticar($request->code, $request);
+
+        $arr = $serv->autenticar($request->code, $request);
+        $srv = new UsuarioService();
+        $user = $srv->find($request['userId']);
+        $srv->update($user->nombre, $user->email, $user->perfiles, $user->id_empresa, $arr['token'], $arr['refresh_token'], $arr['expires'], $request['userId']);
 
     }
 

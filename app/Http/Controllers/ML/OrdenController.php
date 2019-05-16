@@ -16,14 +16,11 @@ class OrdenController extends Controller
 
     private $service;
 
-    public function __construct(OrdenService $service)
-    {
-        $this->service = $service;
-    }
 
     public function ordenes(Request $request)
     {
-        return $this->service->ordenesRecientes($request['meli']);
+        $srv = new OrdenService($request['meli']);
+        return $srv->ordenesRecientes();
     }
 
 

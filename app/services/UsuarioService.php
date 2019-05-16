@@ -29,14 +29,17 @@ class UsuarioService
         return $usuario;
     }
 
-    public function update($nombre, $email, $perfiles, $idEmpresa, $id)
+    public function update($nombre, $email, $perfiles, $idEmpresa, $token, $refresh_token, $expires, $id)
     {
         $user = User::find($id);
         $user->fill([
             'nombre' => $nombre,
             'user' => $user,
             'email' => $email,
-            'id_empresa' => $idEmpresa
+            'id_empresa' => $idEmpresa,
+            'token' => $token,
+            'refresh_token' => $refresh_token,
+            'expires_in' => $expires,
         ]);
         $user->save();
         $user->perfiles()->sync($perfiles);

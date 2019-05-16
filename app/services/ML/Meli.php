@@ -277,6 +277,11 @@ class Meli {
             }
         }
     }
+
+    public function getToken()
+    {
+        return $this->user->token;
+    }
     /**
      * Check and construct an real URL to make request
      *
