@@ -30,6 +30,7 @@ class AuthMLService
         $request->session()->put('expires_in',time() + $user['body']->expires_in);
         //$_SESSION['expires_in'] = time() + $user['body']->expires_in;
         //$_SESSION['refresh_token'] = $user['body']->refresh_token;
+        return $user['body'];
         return array('token' => $user['body']->access_token, 'refresh' => $user['body']->refresh_token, 'expires' => time() + $user['body']->expires_in);
 
 
