@@ -32,7 +32,7 @@ class AuthMLService
 
         $user = $this->meli->authorize($codigo, "https://facturacionjoaquin.herokuapp.com/autenticar");
 
-        return array('token' => $user['body']->access_token, 'refresh' => $user['body']->refresh_token, 'expires' => Carbon::today()->addSeconds($user['body']->expires_in)->toDateTimeString());
+        return array('token' => $user['body']->access_token, 'refresh_token' => $user['body']->refresh_token, 'expires' => Carbon::today()->addSeconds($user['body']->expires_in)->toDateTimeString());
 
 
     }
