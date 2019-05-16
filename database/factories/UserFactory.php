@@ -15,7 +15,10 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'email' => 'prueba@prueba',
         'password' => Hash::make('prueba'),
         'user' => 'prueba',
-        'id_empresa' => 1
+        'id_empresa' => 1,
+        'token' => null,
+        'refresh_token' => null,
+        'expires_in' => null
 
     ];
 });
