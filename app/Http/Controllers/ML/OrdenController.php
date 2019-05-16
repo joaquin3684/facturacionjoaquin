@@ -23,8 +23,7 @@ class OrdenController extends Controller
 
     public function ordenes(Request $request)
     {
-        return $request->session()->all();
-        return $this->service->ordenesRecientes($request->session()->get('token'));
+        return $this->service->ordenesRecientes($request['meli']);
     }
 
 

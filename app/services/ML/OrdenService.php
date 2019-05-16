@@ -13,9 +13,9 @@ class OrdenService
 {
     private $meli;
 
-    public function __construct()
+    public function __construct(Meli $meli)
     {
-        $this->meli = new Meli('2382179841161472', 'X6U4B4gZKELFsY739dANIwJ1qFuD5Bo4');
+        $this->meli = $meli;
     }
 
     public function ordenesRecientes($access_token)
