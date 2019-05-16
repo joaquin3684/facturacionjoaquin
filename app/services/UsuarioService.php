@@ -31,7 +31,7 @@ class UsuarioService
 
     public function update($nombre, $email, $perfiles, $idEmpresa, $token, $refresh_token, $expires, $id)
     {
-        $user = User::find($id);
+        $user = $this->find($id);
         $user->fill([
             'nombre' => $nombre,
             'user' => $user,

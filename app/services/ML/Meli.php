@@ -278,6 +278,11 @@ class Meli {
         }
     }
 
+    public function getUser()
+    {
+        return $this->user;
+    }
+
     public function getToken()
     {
         return $this->user->token;

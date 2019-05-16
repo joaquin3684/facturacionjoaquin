@@ -57,9 +57,9 @@ class LoginController extends Controller
     {
         $serv = new AuthMLService($request['meli']);
 
-        $arr = $serv->autenticar($request->code, $request);
+        $arr = $serv->autenticar($request->code);
         $srv = new UsuarioService();
-        $user = $srv->find($request['userId']);
+        $user = $request['meli']->getUser();
         $srv->update($user->nombre, $user->email, $user->perfiles, $user->id_empresa, $arr['token'], $arr['refresh_token'], $arr['expires'], $request['userId']);
 
     }
