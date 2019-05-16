@@ -22,6 +22,9 @@ class Usuario extends Migration
             $table->string('email');
             $table->string('nombre');
             $table->text('password');
+            $table->text('token');
+            $table->text('expires_in');
+            $table->text('refresh_token');
             $table->integer('id_empresa')->unsigned();
             $table->foreign('id_empresa')->references('id')->on('empresas');
             $table->rememberToken();
