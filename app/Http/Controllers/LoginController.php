@@ -55,7 +55,10 @@ class LoginController extends Controller
     public function authorizar(Request $request)
     {
         $serv = new AuthMLService();
-        return $serv->autenticar($request->code, $request);
+        $arr = $serv->autenticar($request->code, $request);
+        $request->session()->put('token', $arr['token']);
+        $request->session()->put('refresh_token', $arr['refresh']);
+        $request->session()->put('expires_in', $arr['expires']);
     }
 
 

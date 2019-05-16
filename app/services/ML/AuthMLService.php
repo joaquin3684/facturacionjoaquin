@@ -19,17 +19,12 @@ class AuthMLService
         return $redirectUrl;
     }
 
-    public function autenticar($codigo, $request)
+    public function autenticar($codigo)
     {
         $meli = new Meli('2382179841161472', 'X6U4B4gZKELFsY739dANIwJ1qFuD5Bo4');
 
         $user = $meli->authorize($codigo, "https://facturacionjoaquin.herokuapp.com/autenticar");
-        // Now we create the sessions with the authenticated user
-        $request->session()->put('token',$user['body']->access_token);
-        $request->session()->put('refresh_token', $user['body']->refresh_token);
-        $request->session()->put('expires_in',time() + $user['body']->expires_in);
-        //$_SESSION['expires_in'] = time() + $user['body']->expires_in;
-        //$_SESSION['refresh_token'] = $user['body']->refresh_token;
+
         return array('token' => $user['body']->access_token, 'refresh' => $user['body']->refresh_token, 'expires' => time() + $user['body']->expires_in);
 
 
