@@ -25,7 +25,7 @@ class AuthMLService
 
         $user = $meli->authorize($codigo, "https://facturacionjoaquin.herokuapp.com/autenticar");
 
-        return array('token' => $user['body']->access_token, 'refresh' => $user['body']->refresh_token, 'expires' => time() + $user['body']->expires_in);
+        return array('token' => $user['body']->access_token, 'refresh' => $user['body']->refresh_token, 'expires' => $user['body']->expires_in);
 
 
     }
