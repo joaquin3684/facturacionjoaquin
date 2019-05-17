@@ -161,7 +161,7 @@ class PublicacionMapper
                 return new PublicacionML($p->id, $p->site_id, $p->title, $p->subtitle, $p->seller_id, $p->price, $p->available_quantity);
             });
         else
-            return new PublicacionML($p->id, $p->site_id, $p->title, $p->subtitle, $p->seller_id, $p->price, $p->available_quantity);
+            return new PublicacionML($publi->id, $publi->site_id, $publi->title, $publi->subtitle, $publi->seller_id, $publi->price, $publi->available_quantity);
 
     }
 }
