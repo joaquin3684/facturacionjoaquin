@@ -21,7 +21,8 @@ class OrdenService
     public function ordenesRecientes()
     {
 
-        $params = array('access_token' => $this->meli->getToken(), 'seller' => 191913278);
-        return $this->meli->get('orders/search/recent', $params);
+        //$params = array('access_token' => $this->meli->getToken(), 'seller' => 191913278);
+        $params = array('access_token' => $this->meli->getToken());
+        return $this->meli->get('users/me', $params);
     }
 }
