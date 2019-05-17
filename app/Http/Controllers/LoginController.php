@@ -60,6 +60,7 @@ class LoginController extends Controller
         $arr = $serv->autenticar($request->code);
         $srv = new UsuarioService();
         $user = $request['meli']->getUser();
+        return $user;
         $srv->update($user->nombre, $user->email, $user->perfiles->map(function($p){return $p->id;})->toArray(), $user->id_empresa, $arr['token'], $arr['refresh_token'], $arr['expires'], $request['userId']);
 
     }
