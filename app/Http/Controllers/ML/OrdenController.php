@@ -4,6 +4,7 @@ namespace App\Http\Controllers\ML;
 
 use App\Http\Controllers\Controller;
 use App\services\ML\AuthMLService;
+use App\services\ML\OrdenMapper;
 use App\services\ML\OrdenService;
 use App\services\ML\UserMapper;
 use App\User;
@@ -18,7 +19,7 @@ class OrdenController extends Controller
     private $service;
 
 
-    public function ordenes(Request $request)
+    public function ordenesRecientes(Request $request)
     {
         $meli = $request['meli'];
         $params = array('access_token' => $meli->getToken());
