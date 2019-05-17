@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\ML;
 
+use App\Http\Controllers\Controller;
 use App\services\ML\PublicacionMapper;
 use App\services\ML\UserMapper;
 use Illuminate\Http\Request;
