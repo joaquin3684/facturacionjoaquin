@@ -19,6 +19,7 @@ class OrdenController extends Controller
 
     public function ordenes(Request $request)
     {
+        return $request['meli']->getToken();
         $srv = new OrdenService($request['meli']);
         return $srv->ordenesRecientes();
     }
