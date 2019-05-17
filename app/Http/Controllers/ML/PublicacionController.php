@@ -15,10 +15,18 @@ class PublicacionController extends Controller
         $meli = $request['meli'];
         $params = array('access_token' => $meli->getToken());
         $user = UserMapper::map($meli->get('users/me', $params)['body']);
-        $params = array('access_token' => $meli->getToken(), 'status' => 'active');
+        $params = array('access_token' => $meli->getToken(), 'status' => 'active', 'sku' => '');
         $publis = PublicacionMapper::map($meli->get('users/'.$user->id.'/items/search', $params)['body']);
 
         return $publis;
 
+    }
+
+    public function linkear(Request $request)
+    {
+        $meli = $request['meli'];
+        $idPubli = $request['idPublicacion'];
+        $params = array('access_token' => $meli->getToken());
+        $meli->put('items/'.$idPubli , ['seller_custom_field' => $request['idProducto']], $params);
     }
 }
