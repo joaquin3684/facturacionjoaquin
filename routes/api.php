@@ -18,6 +18,7 @@ Route::group(['middleware' => ['permisos', 'jwt.auth', 'meli']], function () {
     Route::get('ml/loginML', 'LoginController@ml');
     Route::get('ml/autenticar', 'LoginController@authorizar');
     Route::get('ml/publicacionesSinLinkear', 'ML\PublicacionController@publicacionesSinLinkear');
+    Route::post('ml/linkear', 'ML\PublicacionController@linkear');
     Route::get('ml/ordenes', 'ML\OrdenController@ordenes');
     Route::get('ml/token', function(Request $request){
         return $request['meli']->getToken();

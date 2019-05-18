@@ -19,6 +19,7 @@ class PublicacionController extends Controller
         $items = $meli->get('users/'.$user->id.'/items/search', $params)['body']->results;
 
         $params = array('access_token' => $meli->getToken(), 'ids' => implode(",",$items));
+        //TODO aca falta marcar los primeros veinte y la paginacion
         $items = $meli->get('items', $params)['body'];
         $itemsSinMap = collect($items)->map(function($i){
             return $i->body;
