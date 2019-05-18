@@ -10,7 +10,7 @@ namespace App\services\ML;
 
 
 use App\services\ML\Dom\PublicacionML;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 
 class PublicacionMapper
 {
