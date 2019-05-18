@@ -10,6 +10,7 @@ namespace App\services\ML;
 
 
 use App\services\ML\Dom\PublicacionML;
+use Illuminate\Database\Eloquent\Collection;
 
 class PublicacionMapper
 {
@@ -156,7 +157,7 @@ class PublicacionMapper
 
     public static function map($publi)
     {
-        if(is_array($publi))
+        if($publi instanceof Collection)
             return $publi->map(function($p){
                 return new PublicacionML($p->id, $p->site_id, $p->title, $p->subtitle, $p->seller_id, $p->price, $p->available_quantity);
             });
