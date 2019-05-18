@@ -19,8 +19,12 @@ class PublicacionController extends Controller
         $items = $meli->get('users/'.$user->id.'/items/search', $params)['body']->results;
 
         $params = array('access_token' => $meli->getToken(), 'ids' => implode(",",$items));
-        return $meli->get('items', $params);
-        $publis = PublicacionMapper::map($meli->get('items', $params)['body']);
+        $items = $meli->get('items', $params)['body'];
+        $itemsSinMap = collect($items['body'])->map(function($i){
+            return $i['body'];
+        });
+
+        $publis = PublicacionMapper::map($itemsSinMap);
 
         return $publis;
 
