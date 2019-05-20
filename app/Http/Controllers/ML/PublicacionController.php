@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 class PublicacionController extends Controller
 {
 
-    public function publicacionesSinLinkear(Request $request)
+    public function all(Request $request)
     {
         $meli = $request['meli'];
         $params = array('access_token' => $meli->getToken());
