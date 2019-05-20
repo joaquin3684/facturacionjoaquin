@@ -26,21 +26,29 @@ class ProductoServiceTest extends TestCase
 
     public function testStore()
     {
+        $compuestos = factory(Producto::class, 3)->create();
         $data = factory(Producto::class)->make();
+
         $this->service->store(
             $data->nombre,
             $data->descripcion,
             $data->importe,
             $data->pto_reposicion,
             $data->id_ml,
-            $data->id_empresa
+            $data->id_empresa,
+            $compuestos->map(function($c){return array('idProducto' => $c->id, 'cantidad' => 2);})->toArray()
         );
 
         $this->assertDatabaseHas('productos', $data->toArray());
+        $this->assertDatabaseHas('composicion', ['id_producto' => 4, 'id_compuesto' => 1]);
+        $this->assertDatabaseHas('composicion', ['id_producto' => 4, 'id_compuesto' => 2]);
+        $this->assertDatabaseHas('composicion', ['id_producto' => 4, 'id_compuesto' => 3]);
     }
 
     public function testUpdate()
     {
+        $compuestos = factory(Producto::class, 3)->create();
+
         $data = factory(Producto::class)->create();
         $dataUpdate = factory(Producto::class)->make();
         $this->service->update(
@@ -50,10 +58,14 @@ class ProductoServiceTest extends TestCase
             $dataUpdate->pto_reposicion,
             $dataUpdate->id_ml,
             $dataUpdate->id_empresa,
+            $compuestos->map(function($c){return array('idProducto' => $c->id, 'cantidad' => 2);})->toArray(),
             $data->id
         );
 
         $this->assertDatabaseHas('productos', $dataUpdate->toArray());
+        $this->assertDatabaseHas('composicion', ['id_producto' => 4, 'id_compuesto' => 1]);
+        $this->assertDatabaseHas('composicion', ['id_producto' => 4, 'id_compuesto' => 2]);
+        $this->assertDatabaseHas('composicion', ['id_producto' => 4, 'id_compuesto' => 3]);
     }
 
     public function testFind()

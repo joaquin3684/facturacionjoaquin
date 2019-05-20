@@ -24,7 +24,8 @@ class ProductoController extends Controller
                 $request['importe'],
                 $request['ptoReposicion'],
                 $request['idMl'],
-                $request['idEmpresa']
+                $request['idEmpresa'],
+                $request['compuestos']
             );
         });
     }
@@ -39,6 +40,7 @@ class ProductoController extends Controller
                 $request['ptoReposicion'],
                 $request['idMl'],
                 $request['idEmpresa'],
+                $request['compuestos'],
                 $id
             );
         });
