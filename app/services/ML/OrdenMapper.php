@@ -111,12 +111,13 @@ class OrdenMapper
    }*/
     public static function map($ordenes)
     {
+
         if(is_array($ordenes))
             return collect($ordenes)->map(function($o){
-                return new OrdenML($o->id, $o->status, $o->fecha_creado, collect($o->order_items)->map(function($i){return $i->id;}), $o->total_amount, $o->buyer->id, $o->shipping->status);
+                return new OrdenML($o->id, $o->status, $o->fecha_creado, collect($o->order_items)->map(function($i){return $i->id;}), $o->total_amount, UserMapper::map($o->buyer), $o->shipping->status);
             });
         else
-            return new OrdenML($ordenes->id, $ordenes->status, $ordenes->fecha_creado, collect($ordenes->order_items)->map(function($i){return $i->id;}), $ordenes->total_amount, $ordenes->buyer->id, $ordenes->shipping->status);
+            return new OrdenML($ordenes->id, $ordenes->status, $ordenes->fecha_creado, collect($ordenes->order_items)->map(function($i){return $i->id;}), $ordenes->total_amount, UserMapper::map($ordenes->buyer), $ordenes->shipping->status);
 
     }
 }

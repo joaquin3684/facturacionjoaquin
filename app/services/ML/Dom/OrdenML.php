@@ -30,7 +30,7 @@ class OrdenML
      * @param $comprador
      * @param $estado_envio
      */
-    public function __construct($id, $estado, $fecha_creado, $items, $precio, $comprador, $estado_envio)
+    public function __construct($id, $estado, $fecha_creado, $items, $precio, UserML $comprador, $estado_envio)
     {
         $this->id = $id;
         $this->estado = $estado;

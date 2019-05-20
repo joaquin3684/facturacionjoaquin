@@ -12,13 +12,13 @@ namespace App\services\ML\Dom;
 class PublicacionML
 {
 
-    public $id;
-    public $site_id;
-    public $title;
-    public $subtitle;
-    public $seller_id;
-    public $precio;
-    public $stock;
+    private $id;
+    private $site_id;
+    private $title;
+    private $subtitle;
+    private $seller_id;
+    private $precio;
+    private $stock;
 
     /**
      * PublicacionML constructor.

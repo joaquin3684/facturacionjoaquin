@@ -23,4 +23,15 @@ class ItemFacturaService
             'id_producto' => $idProducto,
         ]);
     }
+
+    public function delete($id)
+    {
+        $item = $this->find($id);
+        $item->delete();
+    }
+
+    public function find($id)
+    {
+        return ItemFactura::find($id);
+    }
 }

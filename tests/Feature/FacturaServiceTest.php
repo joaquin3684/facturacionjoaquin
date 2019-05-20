@@ -87,6 +87,7 @@ class FacturaServiceTest extends TestCase
     public function testAll()
     {
         factory(Factura::class,3)->create();
+        factory(ItemFactura::class,2)->create(['id_producto' => 1]);
         $facturas = $this->service->all(Carbon::today()->toDateString(), Carbon::today()->toDateString(), 1);
         $this->assertEquals(3, $facturas->count());
     }
@@ -94,6 +95,8 @@ class FacturaServiceTest extends TestCase
     public function testFind()
     {
         $fac = factory(Factura::class)->create();
+        factory(ItemFactura::class,2)->create(['id_producto' => 1, 'id_factura' => $fac->id]);
+        $fac = $this->service->find($fac->id);
         $this->assertEquals(1, $fac->id);
     }
 

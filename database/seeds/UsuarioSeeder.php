@@ -20,7 +20,6 @@ class UsuarioSeeder extends Seeder
             $teamLeader = factory(App\User::class)->create(['nombre' => 'TEAM LEADER', 'user' => 'TEAMLEADER', 'password' => Hash::make('TEAMLEADER')]);
             $operadorVenta = factory(App\User::class)->create(['nombre' => 'OPERADOR', 'user' => 'OPERADOR', 'id_jefe' => $teamLeader->id, 'password' => Hash::make('OPERADOR')]);
 
-            $this->call(ObrasSocialesSeeder::class);
             $this->call(PerfilesSeeder::class);
 
 

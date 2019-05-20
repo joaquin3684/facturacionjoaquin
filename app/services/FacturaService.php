@@ -45,12 +45,12 @@ class FacturaService
             'id_empresa' => $idEmpresa,
             'entregado' => $entregado
         ]);
-        $this->storeItems($items);
+        $this->storeItems($items, $factura->id);
     }
 
     public function all($fechaDesde, $fechaHasta, $idEmpresa)
     {
-        return Factura::with('items')
+        return Factura::with('items.producto')
             ->where('fecha', '<=', $fechaHasta)
             ->where('fecha', '>=', $fechaDesde)
             ->where('id_empresa', $idEmpresa)
@@ -59,13 +59,13 @@ class FacturaService
 
     public function find($id)
     {
-        return Factura::with('items')->find($id);
+        return Factura::with('items.producto')->find($id);
     }
 
-    public function storeItems($items)
+    public function storeItems($items, $facId)
     {
         foreach ($items as $item)
-            $this->itemService->store($item['cantidad'], $item['impuesto'], $item['importe'], $factura->id, $item['id_producto']);
+            $this->itemService->store($item['cantidad'], $item['impuesto'], $item['importe'], $facId, $item['id_producto']);
     }
 
     public function delete($id)
@@ -109,7 +109,7 @@ class FacturaService
 
         ]);
         $fac->save();
-        $this->storeItems($items);
+        $this->storeItems($items, $fac->id);
     }
 
 
