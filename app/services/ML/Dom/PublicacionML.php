@@ -15,13 +15,13 @@ class PublicacionML
 {
     use Conversion;
 
-    private $id;
-    private $site_id;
-    private $title;
-    private $subtitle;
-    private $seller_id;
-    private $precio;
-    private $stock;
+    public $id;
+    public $site_id;
+    public $title;
+    public $subtitle;
+    public $seller_id;
+    public $precio;
+    public $stock;
 
     /**
      * PublicacionML constructor.
