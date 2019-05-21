@@ -9,8 +9,11 @@
 namespace App\services\ML\Dom;
 
 
+use App\Traits\Conversion;
+
 class PublicacionML
 {
+    use Conversion;
 
     private $id;
     private $site_id;

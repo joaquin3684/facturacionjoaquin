@@ -24,10 +24,9 @@ class PublicacionController extends Controller
         $itemsSinMap = collect($items)->map(function($i){
             return $i->body;
         });
-        return $itemsSinMap;
         $publis = PublicacionMapper::map($itemsSinMap);
 
-        return $publis;
+        return $publis->toArray($publis);
 
     }
 
