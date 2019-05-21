@@ -16,4 +16,6 @@ class Producto extends Model
     {
         return $this->belongsToMany('App\Producto', 'composicion', 'id_producto', 'id_compuesto')->withPivot('cantidad');
     }
+
+
 }

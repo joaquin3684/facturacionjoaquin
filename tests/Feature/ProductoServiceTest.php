@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Compuesto;
 use App\Producto;
 use App\services\ProductoService;
 use Tests\TestCase;
@@ -87,5 +88,22 @@ class ProductoServiceTest extends TestCase
         $data = factory(Producto::class)->create();
         $this->service->delete($data->id);
         $this->assertSoftDeleted('productos', ['id' => 1]);
+    }
+
+    public function testPrueba()
+    {
+
+       $prod = Compuesto::create(
+            factory(Producto::class)->make(['stock' => 10])->toArray()
+        );
+        $comp1 = factory(Producto::class)->create(['stock' => 3]);
+        $comp2 = factory(Producto::class)->create(['stock' => 4]);
+        $prod->compuestos()->attach([
+            $comp1->id => ['cantidad' => 2],
+            $comp2->id => ['cantidad' => 2],
+        ]);
+
+
+        $prod->stock;
     }
 }

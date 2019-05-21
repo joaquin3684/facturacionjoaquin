@@ -2,6 +2,9 @@
 
 namespace Tests\Feature;
 
+use App\services\ML\Meli;
+use App\services\ML\PublicacionMapper;
+use App\services\ML\UserMapper;
 use App\services\UsuarioService;
 use App\User;
 use Illuminate\Support\Facades\Hash;
@@ -21,7 +24,7 @@ class UsuarioServiceTest extends TestCase
         parent::setUp();
         $this->service = new UsuarioService();
         $this->artisan('migrate:refresh', ['--database' => 'mysql_testing']);
-        $this->artisan('db:seed', ['--class' => 'PerfilesSeeder', '--database' => 'mysql_testing']);
+        //$this->artisan('db:seed', ['--class' => 'PerfilesSeeder', '--database' => 'mysql_testing']);
 
     }
 
@@ -88,5 +91,24 @@ class UsuarioServiceTest extends TestCase
         $user = factory(User::class)->create(['user' => 'ramon']);
         $user = $this->service->cambiarPassword('mantecol', $user);
         $this->assertTrue(Hash::check('mantecol', $user->password));
+    }
+
+    public function testML()
+    {
+        $meli = new Meli(1);
+        $params = array('access_token' => 'APP_USR-2382179841161472-052118-931b7819456f7942c53b5c67a233d75a-436820632');
+        $user = UserMapper::map($meli->get('users/me', $params)['body']);
+        $params = array('access_token' => 'APP_USR-2382179841161472-052118-931b7819456f7942c53b5c67a233d75a-436820632', 'status' => 'active', 'sku' => null);
+        $items = $meli->get('users/'.$user->id.'/items/search', $params)['body']->results;
+
+        $params = array('access_token' => 'APP_USR-2382179841161472-052118-931b7819456f7942c53b5c67a233d75a-436820632', 'ids' => implode(",",$items));
+        //TODO aca falta marcar los primeros veinte y la paginacion
+        $items = $meli->get('items', $params)['body'];
+        $itemsSinMap = collect($items)->map(function($i){
+            return $i->body;
+        });
+        $publis = PublicacionMapper::map($itemsSinMap);
+
+        return $publis;
     }
 }
