@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Compuesto;
 use App\Producto;
 use App\services\ProductoService;
+use App\Simple;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -103,7 +104,12 @@ class ProductoServiceTest extends TestCase
             $comp2->id => ['cantidad' => 2],
         ]);
 
+        $prod2 = Simple::create(
+            factory(Producto::class)->make(['stock' => 10])->toArray()
 
+        );
+
+        $prods = Producto::all();
         $prod->stock;
     }
 }

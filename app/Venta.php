@@ -33,11 +33,27 @@ class Venta extends Factura
         }
         $attributes['cuit_emisor'] = Empresa::find($attributes['id_empresa'])->cuit;
         $attributes['tipo_fact'] = TipoFactura::VENTA;
-        return parent::create($attributes);
+        $fac = parent::create($attributes);
+        $items = $this->createItems($attributes['items']);
+        $items->each(function($i){ $this->descontarStock($i->producto, $i->cantidad);});
+        return $fac;
     }
 
     public function facturaElectronica()
     {
+        //TODO hacer la magia de la afip
+    }
+
+    public function createItems(array $attributes = [])
+    {
+        foreach ($attributes as $a)
+            $a['id_factura'] = $this->id;
+        $this->items()->createMany($attributes);
+    }
+
+    public function descontarStock(Producto $producto, $cantidad)
+    {
+        $producto->descontarStock($cantidad);
 
     }
 }

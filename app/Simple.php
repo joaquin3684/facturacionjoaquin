@@ -20,4 +20,16 @@ class Simple extends Producto
             $query->doesntHave('compuestos');
         });
     }
+
+    public function aumentarStock($cantidad)
+    {
+        $this->stock += $cantidad;
+        $this->save();
+    }
+
+    public function descontarStock($cantidad)
+    {
+        $this->stock -= $cantidad;
+        $this->save();
+    }
 }
