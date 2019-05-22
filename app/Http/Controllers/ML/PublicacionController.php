@@ -26,7 +26,7 @@ class PublicacionController extends Controller
         });
         $publis = PublicacionMapper::map($itemsSinMap);
 
-        return $publis->toArray($publis);
+        return $publis;
 
     }
 
