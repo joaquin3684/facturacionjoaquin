@@ -10,6 +10,7 @@ namespace App;
 
 
 use App\Enum\TipoFactura;
+use App\services\ProductoFactory;
 
 class Compra extends Factura
 {
@@ -29,7 +30,25 @@ class Compra extends Factura
         $attributes['cuit_receptor'] = Empresa::find($attributes['id_empresa'])->cuit;
         $attributes['tipo_fact'] = TipoFactura::COMPRA;
         $attributes['entregado'] = false;
-        return parent::create($attributes);
+        $fac = parent::create($attributes);
+        $items = $fac->createItems($attributes['items']);
+
+        $items->map(function($i){return [$i->producto, $i->cantidad];})->each(function($p){$p[0]->aumentarStock($p[1]);});
+        return $fac;
+    }
+
+    public function fill(array $attributes)
+    {
+        parent::fill($attributes);
+        $this->deleteItems();
+        $this->createItems($attributes['items']);
+
+    }
+
+    public function delete()
+    {
+        $this->deleteItems();
+        return parent::delete();
     }
 
 

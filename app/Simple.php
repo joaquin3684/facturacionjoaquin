@@ -9,27 +9,41 @@
 namespace App;
 
 
-class Simple extends Producto
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
+class Simple extends Model
 {
+    use SoftDeletes;
 
-    public static function boot()
+    protected  $table = 'simples';
+    public function producto()
     {
-        parent::boot();
+        return $this->morphOne('App\Producto', 'tipo', 'tipo_type','tipo_id');
+    }
 
-        static::addGlobalScope(function ($query) {
-            $query->doesntHave('compuestos');
-        });
+    public function calcularStock(Producto $prod, $cant = 0)
+    {
+        return $cant;
     }
 
     public function aumentarStock($cantidad)
     {
-        $this->stock += $cantidad;
-        $this->save();
+        $this->producto = $this->producto->fresh();
+        $this->producto->stock += $cantidad;
+        $this->producto->save();
     }
 
     public function descontarStock($cantidad)
     {
-        $this->stock -= $cantidad;
-        $this->save();
+        $this->producto = $this->producto->fresh();
+        $this->producto->stock -= $cantidad;
+        $this->producto->save();
     }
+
+    public function componentes()
+    {
+        return collect([]);
+    }
+
 }

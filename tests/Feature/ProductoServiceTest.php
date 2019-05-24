@@ -20,7 +20,6 @@ class ProductoServiceTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $this->service = new ProductoService();
         $this->artisan('migrate:refresh', ['--database' => 'mysql_testing']);
         $this->artisan('db:seed', ['--class' => 'EmpresaSeeder', '--database' => 'mysql_testing']);
 
@@ -94,22 +93,31 @@ class ProductoServiceTest extends TestCase
     public function testPrueba()
     {
 
-       $prod = Compuesto::create(
-            factory(Producto::class)->make(['stock' => 10])->toArray()
-        );
-        $comp1 = factory(Producto::class)->create(['stock' => 3]);
-        $comp2 = factory(Producto::class)->create(['stock' => 4]);
-        $prod->compuestos()->attach([
+       $prod = Compuesto::create([]);
+        factory(Producto::class)->create(['stock' => 10, 'tipo_type' =>'App\Compuesto', 'tipo_id' => $prod->id]);
+        $simple = Simple::create([]);
+        $simple2 = Simple::create([]);
+        $comp1 = factory(Producto::class)->create(['stock' => 10, 'tipo_type' =>'App\Simple', 'tipo_id' => $simple->id]);
+        $comp2 = factory(Producto::class)->create(['stock' => 10, 'tipo_type' =>'App\Simple', 'tipo_id' => $simple2->id]);
+
+        $prod->componentes()->attach([
             $comp1->id => ['cantidad' => 2],
             $comp2->id => ['cantidad' => 2],
         ]);
+        $a = $prod->producto->stock;
+        $prod->descontarStock(3);
 
+        $prod = $prod->fresh('componentes');
+        $stock = $prod->producto->stock;
         $prod2 = Simple::create(
             factory(Producto::class)->make(['stock' => 10])->toArray()
 
         );
 
         $prods = Producto::all();
+        $prods->each(function($p){
+            $p->aumentarStock(2);
+        });
         $prod->stock;
     }
 }

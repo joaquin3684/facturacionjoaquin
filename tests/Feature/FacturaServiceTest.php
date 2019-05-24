@@ -37,7 +37,7 @@ class FacturaServiceTest extends TestCase
         $nro = 321456987;
         $fecha = Carbon::today()->toDateString();
         $idEmpresa = 1;
-        $this->service->store($cuitEmisor, $cuitReceptor, $tipo, $facturado, $ml, $items, $nro, $fecha, $idEmpresa);
+        $this->service->store($cuitEmisor, $cuitReceptor, $tipo, $facturado, $ml, $items, $nro, $fecha, $idEmpresa, true);
 
         $this->assertDatabaseHas('facturas', [
             'cuit_emisor' => $cuitEmisor,

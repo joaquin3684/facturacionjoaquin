@@ -10,6 +10,7 @@ namespace App;
 
 
 use App\Enum\TipoFactura;
+use App\services\ProductoFactory;
 
 class Venta extends Factura
 {
@@ -34,8 +35,9 @@ class Venta extends Factura
         $attributes['cuit_emisor'] = Empresa::find($attributes['id_empresa'])->cuit;
         $attributes['tipo_fact'] = TipoFactura::VENTA;
         $fac = parent::create($attributes);
-        $items = $this->createItems($attributes['items']);
-        $items->each(function($i){ $this->descontarStock($i->producto, $i->cantidad);});
+        $items = $fac->createItems($attributes['items']);
+
+        $items->map(function($i){return [$i->producto, $i->cantidad];})->each(function($p){$p[0]->descontarStock($p[1]);});
         return $fac;
     }
 
@@ -44,16 +46,4 @@ class Venta extends Factura
         //TODO hacer la magia de la afip
     }
 
-    public function createItems(array $attributes = [])
-    {
-        foreach ($attributes as $a)
-            $a['id_factura'] = $this->id;
-        $this->items()->createMany($attributes);
-    }
-
-    public function descontarStock(Producto $producto, $cantidad)
-    {
-        $producto->descontarStock($cantidad);
-
-    }
 }

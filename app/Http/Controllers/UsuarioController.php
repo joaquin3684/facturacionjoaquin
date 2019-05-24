@@ -9,27 +9,20 @@ use Illuminate\Support\Facades\DB;
 
 class UsuarioController extends Controller
 {
-    private $service;
 
-    public function __construct()
-    {
-        $this->service = new UsuarioService();
-    }
-
-    public function create(Request $request)
+    public function store(Request $request)
     {
         Db::transaction(function () use ($request) {
-            $perfiles = $request['perfiles'];
-            $obrasSociales = $request['obrasSociales'];
-            $password = $request['password'];
-            $user = $request['user'];
-            $nombre = $request['nombre'];
-            $email = $request['email'];
 
-            $subordinados = User::whereIn('id', $request['subordinados'])->get();
+            (new User())->create([
+                'nombre' => $request['nombre'],
+                'user' => $request['user'],
+                'password' => $request['password'],
+                'email' => $request['email'],
+                'id_empresa' => $request['idEmpresa'],
+                'perfiles' => $request['perfiles']
+            ]);
 
-
-            $this->service->crear($nombre, $user, $password, $email, $perfiles, $obrasSociales, $subordinados);
         });
     }
 
@@ -37,22 +30,22 @@ class UsuarioController extends Controller
     {
         Db::transaction(function () use ($request, $id) {
             $user = User::find($id);
-            $perfiles = $request['perfiles'];
-            $obrasSociales = $request['obrasSociales'];
-            $nombre = $request['nombre'];
-            $email = $request['email'];
-            $subordinados = $request['subordinados'];
+            $user->fill([
+                'nombre' => $request['nombre'],
+                'user' => $request['user'],
+                'email' => $request['email'],
+                'id_empresa' => $request['idEmpresa'],
+            ]);
+            $user->save();
+            $user->perfiles()->sync($request['perfiles']);
 
-
-            $this->service->update($nombre, $email, $perfiles, $obrasSociales, $subordinados, $user);
         });
     }
 
     public function delete($id)
     {
         Db::transaction(function () use ($id) {
-            $user = User::find($id);
-            $this->service->delete($user);
+            User::destroy($id);
         });
     }
 
@@ -60,38 +53,18 @@ class UsuarioController extends Controller
     {
         Db::transaction(function () use ($request) {
             $user = User::withTrashed()->find($request['id']);
-            $this->service->habilitar($user);
+            $user->restore();
         });
     }
 
     public function all()
     {
-        return $this->service->all();
-    }
-
-    public function paraCreacion()
-    {
-        return $this->service->paraCreacion();
-    }
-
-    public function basicos()
-    {
-        return $this->service->basicos();
-    }
-
-    public function subordinables()
-    {
-        return $this->service->subordinables();
+        return User::withTrashed()->get();
     }
 
     public function find($id)
     {
-        return $this->service->find($id);
-    }
-
-    public function porPerfil($id)
-    {
-        return $this->service->porPerfil($id);
+        return User::with( 'perfiles')->find($id);
     }
 
     public function cambiarPasswordPropia(Request $request)
@@ -100,7 +73,7 @@ class UsuarioController extends Controller
         Db::transaction(function () use ($request) {
 
             $user = User::find($request['userId']);
-            $this->service->cambiarPassword($request['password'], $user);
+            $user->cambiarPassword($request['password']);
         });
     }
 
@@ -108,7 +81,8 @@ class UsuarioController extends Controller
     {
         Db::transaction(function () use ($request) {
             $user = User::find($request['id']);
-            $this->service->cambiarPassword($request['password'], $user);
+            $user->cambiarPassword($request['password']);
+
         });
     }
 }

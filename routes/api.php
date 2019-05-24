@@ -19,7 +19,7 @@ Route::group(['middleware' => ['permisos', 'jwt.auth', 'meli']], function () {
     Route::get('ml/autenticar', 'LoginController@authorizar');
     Route::get('publicacion/all', 'ML\PublicacionController@all');
     Route::post('publicacion/linkear', 'ML\PublicacionController@linkear');
-    Route::get('ml/ordenes', 'ML\OrdenController@ordenes');
+    Route::get('venta', 'ML\OrdenController@ordenes');
     Route::get('ml/token', function(Request $request){
         return $request['meli']->getToken();
     });
@@ -30,18 +30,18 @@ Route::group(['middleware' => ['permisos', 'jwt.auth']], function() {
 
 
     // USUARIO
-    Route::post('usuario/create', 'UsuarioController@create');
+    Route::post('usuario', 'UsuarioController@store');
     Route::post('usuario/cambiarPasswordPropia', 'UsuarioController@cambiarPasswordPropia');
     Route::post('usuario/cambiarPassword', 'UsuarioController@cambiarPassword');
-    Route::delete('usuario/delete/{id}', 'UsuarioController@delete');
     Route::post('usuario/habilitar', 'UsuarioController@habilitar');
-    Route::put('usuario/update/{id}', 'UsuarioController@update');
     Route::get('usuario/all', 'UsuarioController@all');
-    Route::get('usuario/get/{id}', 'UsuarioController@find');
+    Route::get('usuario/{id}', 'UsuarioController@find');
+    Route::put('usuario/{id}', 'UsuarioController@update');
+    Route::delete('usuario/{id}', 'UsuarioController@delete');
 
     // PERFIL
 
-    Route::get('usuario/perfiles', 'PerfilController@all');
+    Route::get('perfil/all', 'PerfilController@all');
 
 
     // PRODUCTOS
@@ -52,13 +52,19 @@ Route::group(['middleware' => ['permisos', 'jwt.auth']], function() {
     Route::get('producto/all', 'ProductoController@all');
     Route::get('producto/{id}', 'ProductoController@find');
 
-    // FACTURA
+    // Venta
 
-    Route::post('factura', 'FacturaController@store');
-    Route::put('factura/{id}', 'FacturaController@update');
-    Route::delete('factura/{id}', 'FacturaController@delete');
-    Route::get('factura/all/{fechaDesde}/{fechaHasta}', 'FacturaController@all');
-    Route::get('factura/{id}', 'FacturaController@find');
+    Route::post('venta', 'VentaController@store');
+    Route::get('venta/all/{fechaDesde}/{fechaHasta}', 'VentaController@all');
+    Route::get('venta/{id}', 'VentaController@find');
+
+    // Compra
+
+    Route::post('compra', 'CompraController@store');
+    Route::put('compra/{id}', 'CompraController@update');
+    Route::get('compra/all/{fechaDesde}/{fechaHasta}', 'CompraController@all');
+    Route::delete('compra/{id}', 'CompraController@delete');
+
 
 
 

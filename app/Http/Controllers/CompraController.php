@@ -21,7 +21,7 @@ class CompraController extends Controller
                 return $item['impuesto'];
             }, $request['items']));
 
-            $compra = Compra::create([
+            (new Compra())->create([
                 'cuit_emisor' => $request['cuit_emisor'],
                 'total_bruto' => $total,
                 'total_impuestos' => $impuestos,
@@ -32,15 +32,8 @@ class CompraController extends Controller
                 'numero' => $request['nro'],
                 'fecha' => $request['fecha'],
                 'id_empresa' => $request['idEmpresa'],
+                'items' => $request['items']
             ]);
-            foreach ($request['items'] as $i)
-                ItemFactura::create([
-                    'cantidad' => $i['cantidad'],
-                    'impuesto' => $i['impuesto'],
-                    'importe' => $i['importe'],
-                    'id_factura' => $compra->id,
-                    'id_producto' => $i['id_producto'],
-                ]);
 
         });
     }
@@ -68,21 +61,10 @@ class CompraController extends Controller
                 'numero' => $request['nro'],
                 'fecha' => $request['fecha'],
                 'id_empresa' => $request['idEmpresa'],
+                'items' => $request['items']
             ]);
             $compra->save();
 
-            $items = ItemFactura::where('id_factura', $compra->id)->get();
-            $items->each(function($i){$i->delete();});
-
-
-            foreach ($request['items'] as $i)
-                ItemFactura::create([
-                    'cantidad' => $i['cantidad'],
-                    'impuesto' => $i['impuesto'],
-                    'importe' => $i['importe'],
-                    'id_factura' => $compra->id,
-                    'id_producto' => $i['id_producto'],
-                ]);
 
         });
     }
@@ -93,7 +75,8 @@ class CompraController extends Controller
             ->where('fecha', '<=', $fechaHasta)
             ->where('fecha', '>=', $fechaDesde)
             ->where('id_empresa', $request['idEmpresa'])
-            ->get();    }
+            ->get();
+    }
 
     public function find($id)
     {
@@ -103,9 +86,7 @@ class CompraController extends Controller
     public function delete($id)
     {
         $compra = Compra::find($id);
-        $items = ItemFactura::where('id_factura', $compra->id)->get();
-        $items->each(function($i){$i->delete();});
-
         $compra->delete();
+
     }
 }

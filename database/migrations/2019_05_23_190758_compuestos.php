@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateProductosTable extends Migration
+class Compuestos extends Migration
 {
     /**
      * Run the migrations.
@@ -16,19 +16,8 @@ class CreateProductosTable extends Migration
     {
         DB::statement('SET FOREIGN_KEY_CHECKS = 0');
 
-        Schema::create('productos', function (Blueprint $table) {
+        Schema::create('compuestos', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('id_ml')->nullable();
-            $table->string('nombre');
-            $table->string('tipo_type');
-            $table->integer('tipo_id');
-            $table->text('descripcion')->nullable();
-            $table->double('importe');
-            $table->double('stock')->default(0);
-            $table->double('impuesto')->default(0);
-            $table->double('pto_reposicion')->default(0);
-            $table->integer('id_empresa')->unsigned();
-            $table->foreign('id_empresa')->references('id')->on('empresas');
             $table->softDeletes();
             $table->timestamps();
         });
@@ -45,7 +34,7 @@ class CreateProductosTable extends Migration
     {
         DB::statement('SET FOREIGN_KEY_CHECKS = 0');
 
-        Schema::dropIfExists('productos');
+        Schema::dropIfExists('compuestos');
         DB::statement('SET FOREIGN_KEY_CHECKS = 1');
 
     }

@@ -14,6 +14,9 @@ $factory->define(App\Producto::class, function (Faker\Generator $faker) {
         'importe' => 100,
         'id_ml' => null,
         'id_empresa' => 1,
-        'stock' => 0
+        'stock' => 5,
+        'impuesto' => 21,
+        'tipo_type' => 'App\Simple',
+        'tipo_id' => 1,
     ];
 });

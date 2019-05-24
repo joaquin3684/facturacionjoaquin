@@ -9,47 +9,47 @@
 namespace App;
 
 
-class Compuesto extends Producto
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
+class Compuesto extends Model
 {
-    public static function boot()
+    use SoftDeletes;
+
+    protected $table = 'compuestos';
+
+    public function calcularStock(Producto $producto, $cant = 0)
     {
-        parent::boot();
-
-        static::addGlobalScope(function ($query) {
-            $query->has('compuestos');
-        });
-    }
-
-
-    public function getStockAttribute($value)
-    {
-        return $this->compuestos->map(function($c){
+        return $this->componentes->map(function($c){
             return round($c->stock / $c->pivot->cantidad, 0, PHP_ROUND_HALF_DOWN);
         })->min();
-
     }
 
-    public function setStockAttribute($stock)
+    public function aumentarStock($cantidad)
     {
-        $this->compuestos->each(function($c) use ($stock){
-            $c->stock = $c->pivot->cantidad * $stock;
-            $c->save();
+        $this->componentes->each(function($c) use ($cantidad){
+            $c->aumentarStock($cantidad * $c->pivot->cantidad);
         });
     }
 
     public function descontarStock($cantidad)
     {
-        $this->compuestos->each(function($c) use ($cantidad){
-            $c->stock -= $c->pivot->cantidad * $cantidad;
-            $c->save();
+        $this->componentes->each(function($c) use ($cantidad){
+            $c->descontarStock($cantidad * $c->pivot->cantidad);
         });
     }
 
-    public function aumentarStock($cantidad)
+    public function producto()
     {
-        $this->compuestos->each(function($c) use ($cantidad){
-            $c->stock += $c->pivot->cantidad * $cantidad;
-            $c->save();
-        });
+        return $this->morphOne('App\Producto', 'tipo', 'tipo_type','tipo_id');
     }
+
+    public function componentes()
+    {
+        return $this->belongsToMany('App\Producto', 'composicion', 'id_producto', 'id_compuesto')->withPivot('cantidad');
+    }
+
+
+
+
 }

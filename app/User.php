@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
@@ -27,19 +28,18 @@ class User extends Authenticatable implements JWTSubject
         return $this->belongsToMany('App\Perfil', 'usuario_perfil', 'id_usuario', 'id_perfil');
     }
 
-    public function obrasSociales()
+    public function create(array $attributes = [])
     {
-        return $this->belongsToMany('App\ObraSocial', 'usuario_obra_social', 'id_usuario', 'id_obra_social');
+        $attributes['password'] = Hash::make($attributes['password']);
+        $user = parent::create($attributes);
+        $user->perfiles()->attach($attributes['perfiles']);
+        return $user;
     }
 
-    public function subordinados()
+    public function cambiarPassword($password)
     {
-        return $this->hasMany('App\User', 'id_jefe','id');
-    }
-
-    public function jefe()
-    {
-        return $this->belongsTo('App\User', 'id_jefe', 'id');
+        $this->fill(['password' => Hash::make($password)]);
+        $this->save();
     }
 
     /**

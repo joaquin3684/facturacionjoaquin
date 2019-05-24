@@ -13,4 +13,14 @@ class Factura extends Model
     {
         return $this->hasMany('App\ItemFactura','id_factura', 'id');
     }
+
+    public function createItems(array $attributes = [])
+    {
+        return $this->items()->createMany($attributes);
+    }
+
+    public function deleteItems()
+    {
+        $this->items->each(function($i){$i->delete();});
+    }
 }
