@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 
-Route::get('prueba', function(){
+Route::get('a', function(){
 
     return "la concha de tu madres";
 });

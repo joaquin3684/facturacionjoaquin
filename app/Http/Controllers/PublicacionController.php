@@ -35,15 +35,23 @@ class PublicacionController extends Controller
         $params = array('access_token' => $meli->getToken(), 'status' => 'active', 'sku' => null);
         $items = $meli->get('users/'.$user->id.'/items/search', $params)['body']->results;
 
+        $items = array_chunk($items, 20);
+        foreach ($items as $item)
+        {
+            $params = array('access_token' => $meli->getToken(), 'ids' => implode(",",$item));
+            $items = $meli->get('items', $params)['body'];
+            $itemsSinMap = collect($items)->map(function($i){
+                return $i->body;
+            });
 
-        $params = array('access_token' => $meli->getToken(), 'ids' => implode(",",$items));
+            $publis = PublicacionMapper::map($itemsSinMap);
+
+        }
 
         //TODO aca falta marcar los primeros veinte y la paginacion
-        $items = $meli->get('items', $params)['body'];
-        $itemsSinMap = collect($items)->map(function($i){
-            return $i->body;
-        });
-        $publis = PublicacionMapper::map($itemsSinMap);
+
+
+
 
         return $publis;
     }
