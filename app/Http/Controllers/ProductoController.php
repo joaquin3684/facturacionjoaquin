@@ -53,7 +53,7 @@ class ProductoController extends Controller
 
     public function all(Request $request)
     {
-       return Producto::with('compuestos')->where('id_empresa', $request['idEmpresa'])->get();
+       return Producto::with('tipo.componentes')->where('id_empresa', $request['idEmpresa'])->get();
     }
 
     public function delete($id)
