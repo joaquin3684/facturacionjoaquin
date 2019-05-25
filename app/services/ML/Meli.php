@@ -263,16 +263,13 @@ class Meli {
 
                 {
                     $params['access_token'] = $this->access_token;
-                    $this->userService->update(
-                        $this->user->nombre,
-                        $this->user->email,
-                        $this->user->pefiles->map(function ($perfil) {return $perfil->id;})->toArray(),
-                        $this->user->id_empresa,
-                        $this->access_token,
-                        $this->refresh_token,
-                        Carbon::today()->addSeconds($request['body']->expires_in)->toDateTimeString(),
-                        $this->user->id
-                    );
+                    $this->user->fill([
+                        'token' => $this->access_token,
+                        'refresh_token' => $this->refresh_token,
+                        'expires_in' => Carbon::today()->addSeconds($request['body']->expires_in)->toDateTimeString()
+                    ]);
+                    $this->user->save();
+
                 }
             }
         }

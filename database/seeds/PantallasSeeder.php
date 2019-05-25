@@ -15,7 +15,8 @@ class PantallasSeeder extends Seeder
 
         Db::transaction(function(){
             factory(App\Pantalla::class)->create(['nombre' => 'producto']);
-            factory(App\Pantalla::class)->create(['nombre' => 'factura']);
+            factory(App\Pantalla::class)->create(['nombre' => 'venta']);
+            factory(App\Pantalla::class)->create(['nombre' => 'compra']);
             factory(App\Pantalla::class)->create(['nombre' => 'ml']);
             factory(App\Pantalla::class)->create(['nombre' => 'publicacion']);
 
