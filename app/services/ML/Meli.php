@@ -47,7 +47,6 @@ class Meli {
     protected $access_token;
     protected $refresh_token;
     private $user;
-    private $userService;
 
     /**
      * Constructor method. Set all variables to connect in Meli
@@ -63,7 +62,6 @@ class Meli {
         $this->client_secret = 'X6U4B4gZKELFsY739dANIwJ1qFuD5Bo4';
         $this->access_token = $access_token;
         $this->refresh_token = $refresh_token;
-        $this->userService = new UsuarioService();
         $this->user = $user;
     }
 
