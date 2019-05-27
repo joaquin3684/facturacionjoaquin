@@ -45,6 +45,8 @@ class Producto extends Model
             $attributes['tipo_type'] = 'App\Simple';
 
         }
+        $attributes['tipo_id'] = $rel->id;
+
         $prod = parent::create($attributes);
         $prod->tipo()->save($rel);
         return $prod;
