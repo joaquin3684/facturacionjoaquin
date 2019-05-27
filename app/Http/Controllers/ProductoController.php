@@ -16,7 +16,7 @@ class ProductoController extends Controller
     {
         return DB::transaction(function () use ($request){
 
-            return Producto::create([
+            return (new Producto())->create([
                 'nombre' => $request['nombre'],
                 'descripcion' => $request['descripcion'],
                 'importe' => $request['importe'],
