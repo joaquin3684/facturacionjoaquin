@@ -66,6 +66,10 @@ Route::group(['middleware' => ['permisos', 'jwt.auth']], function() {
     Route::delete('compra/{id}', 'CompraController@delete');
 
 
+    // Publicacion
 
+    Route::get('publicacion/all', 'PublicacionController@all');
+    Route::put('publicacion/linkear/:idPublicacion', 'PublicacionController@linkear');
+    Route::put('publicacion/deslinkear/:idPublicacion', 'PublicacionController@deslinkear');
 
 });

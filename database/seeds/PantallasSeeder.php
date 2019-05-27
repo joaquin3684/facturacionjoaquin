@@ -19,6 +19,8 @@ class PantallasSeeder extends Seeder
             factory(App\Pantalla::class)->create(['nombre' => 'compra']);
             factory(App\Pantalla::class)->create(['nombre' => 'ml']);
             factory(App\Pantalla::class)->create(['nombre' => 'publicacion']);
+            factory(App\Pantalla::class)->create(['nombre' => 'usuario']);
+            factory(App\Pantalla::class)->create(['nombre' => 'perfil']);
 
         });
 
