@@ -37,10 +37,13 @@ class Producto extends Model
         if(!is_null($attributes['componentes']) || $attributes['componentes'] != [])
         {
             $rel = Compuesto::create([]);
+            $attributes['tipo_type'] = 'App\Compuesto';
             $rel->componentes()->attach($attributes['componentes']);
         } else
         {
             $rel = Simple::create([]);
+            $attributes['tipo_type'] = 'App\Simple';
+
         }
         $prod = parent::create($attributes);
         $prod->tipo()->save($rel);
