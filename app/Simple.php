@@ -43,7 +43,7 @@ class Simple extends Model
 
     public function componentes()
     {
-        return collect([]);
+        return $this->belongsTo($this->newQuery(), $this, '', '');
     }
 
 }
