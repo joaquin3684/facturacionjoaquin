@@ -23,7 +23,7 @@ class ProductoController extends Controller
                 'pto_reposicion' => $request['ptoReposicion'],
                 'id_ml' => $request['idMl'],
                 'id_empresa' => $request['idEmpresa'],
-                'compuestos' => $request['compuestos'],
+                'componentes' => $request['componentes'],
             ]);
         });
     }
