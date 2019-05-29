@@ -17,11 +17,12 @@ class Compuesto extends Model
     use SoftDeletes;
 
     protected $table = 'compuestos';
+    protected $with = ['componentes'];
 
     public function calcularStock(Producto $producto, $cant = 0)
     {
         return $this->componentes->map(function($c){
-            return round($c->stock / $c->pivot->cantidad, 0, PHP_ROUND_HALF_DOWN);
+            return floor($c->stock / $c->pivot->cantidad);
         })->min();
     }
 
@@ -46,10 +47,14 @@ class Compuesto extends Model
 
     public function componentes()
     {
-        return $this->belongsToMany('App\Producto', 'composicion', 'id_producto', 'id_compuesto')->withPivot('cantidad');
+        return $this->belongsToMany('App\Producto', 'composicion', 'id_producto', 'id_componente')->with('tipo')->withPivot('cantidad');
     }
 
-
+    public function delete()
+    {
+        $this->componentes()->detach();
+        return parent::delete();
+    }
 
 
 }

@@ -10,11 +10,17 @@ class Producto extends Model
     use SoftDeletes;
 
     protected $table = 'productos';
-    protected $fillable = ['nombre', 'descripcion', 'pto_reposicion', 'id_ml', 'importe', 'id_empresa', 'stock', 'tipo_type', 'tipo_id'];
+    protected $with = ['tipo'];
+    protected $fillable = ['nombre', 'descripcion', 'pto_reposicion', 'importe', 'id_empresa', 'stock', 'tipo_type', 'tipo_id'];
 
     public function tipo()
     {
         return $this->morphTo();
+    }
+
+    public function empresa()
+    {
+        return $this->belongsTo('App\Empresa', 'id_empresa', 'id');
     }
 
     public function getStockAttribute($value)
@@ -38,7 +44,11 @@ class Producto extends Model
         {
             $rel = Compuesto::create([]);
             $attributes['tipo_type'] = 'App\Compuesto';
-            $rel->componentes()->attach($attributes['componentes']);
+            $componentes = collect($attributes['componentes']);
+            $componentes = $componentes->mapWithKeys(function($c){
+                return [$c['idProducto'] => ['cantidad' => $c['cantidad']]];
+            });
+            $rel->componentes()->attach($componentes);
         } else
         {
             $rel = Simple::create([]);
@@ -57,19 +67,28 @@ class Producto extends Model
         if($this->tipo instanceof Compuesto && (is_null($attributes['componentes']) || $attributes['componentes'] == []))
         {
             $rel = Simple::create([]);
-            $this->tipo->componentes()->detach();
+            $this->tipo->delete();
             $this->tipo()->dissociate();
             $this->tipo()->associate($rel);
         }
         else if($this->tipo instanceof Simple && (!is_null($attributes['componentes']) || $attributes['componentes'] != []))
         {
             $rel = Compuesto::create([]);
+            $this->tipo->delete();
             $this->tipo()->dissociate();
             $this->tipo()->associate($rel);
-            $rel->componentes()->attach($attributes['componentes']);
+            $componentes = collect($attributes['componentes']);
+            $componentes = $componentes->mapWithKeys(function($c){
+                return [$c['idProducto'] => ['cantidad' => $c['cantidad']]];
+            });
+            $rel->componentes()->attach($componentes);
         } else if($this->tipo instanceof Compuesto)
         {
-            $this->tipo->componentes->sync($attributes['componentes']);
+            $componentes = collect($attributes['componentes']);
+            $componentes = $componentes->mapWithKeys(function($c){
+                return [$c['idProducto'] => ['cantidad' => $c['cantidad']]];
+            });
+            $this->tipo->componentes->sync($componentes);
         }
         return parent::fill($attributes);
     }
@@ -80,4 +99,57 @@ class Producto extends Model
         return parent::delete();
     }
 
+    public function toJson($options = 0)
+    {
+
+        $a = $this->toArray();
+        $json = json_encode($this->prodToArray($a));
+
+        return $json;
+
+    }
+
+    public function prodToArray(&$arr)
+    {
+
+        if(isset($arr['tipo']['componentes']))
+        {
+            $comp = [];
+            foreach ($arr['tipo']['componentes'] as $componente)
+                array_push($comp, $this->prodToArray($componente));
+
+            if(isset($arr['pivot'])) {
+                $arr['cantidad'] = $arr['pivot']['cantidad'];
+                unset($arr['tipo'], $arr['pivot']);
+            } else {
+                unset($arr['tipo']);
+            }
+            $arr['componentes'] = $comp;
+            return $arr;
+        } else {
+            if(isset($arr['pivot'])) {
+                $arr['cantidad'] = $arr['pivot']['cantidad'];
+                unset($arr['tipo'], $arr['pivot']);
+            } else {
+                unset($arr['tipo']);
+            }
+            return $arr;
+        }
+
+    }
+
+    public function componentesToArray(&$componentes)
+    {
+
+        if(isset($componentes['tipo']['componentes']))
+        {
+
+            $a = $componentes['tipo']['componentes'];
+            unset($componentes['tipo']);
+            $componentes['componentes'] = $this->componentesToArray($componentes['tipo']['componentes']);
+        } else
+            return $componentes;
+
+
+    }
 }

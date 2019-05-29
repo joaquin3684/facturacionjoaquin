@@ -20,8 +20,8 @@ class Composicion extends Migration
             $table->increments('id');
             $table->integer('id_producto')->unsigned()->nullable();
             $table->foreign('id_producto')->references('id')->on('productos');
-            $table->integer('id_compuesto')->unsigned()->nullable();
-            $table->foreign('id_compuesto')->references('id')->on('productos');
+            $table->integer('id_componente')->unsigned()->nullable();
+            $table->foreign('id_componente')->references('id')->on('productos');
             $table->integer('cantidad');
             $table->timestamps();
         });

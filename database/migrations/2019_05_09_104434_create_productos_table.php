@@ -18,7 +18,6 @@ class CreateProductosTable extends Migration
 
         Schema::create('productos', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('id_ml')->nullable();
             $table->string('nombre');
             $table->string('tipo_type');
             $table->integer('tipo_id');

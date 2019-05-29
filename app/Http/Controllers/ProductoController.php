@@ -37,9 +37,8 @@ class ProductoController extends Controller
                 'descripcion' => $request['descripcion'],
                 'importe' => $request['importe'],
                 'pto_reposicion' => $request['ptoReposicion'],
-                'id_ml' => $request['idMl'],
                 'id_empresa' => $request['idEmpresa'],
-                'compuestos' => $request['compuestos']
+                'componentes' => !isset($request['componentes']) ? null : $request['componentes'],
             ]);
             $prod->save();
         });
@@ -47,16 +46,13 @@ class ProductoController extends Controller
 
     public function find($id)
     {
-        return Producto::with('tipo.componentes')->find($id);
+        $prod = Producto::find($id);
 
     }
 
     public function all(Request $request)
     {
-        $com =  Producto::with('tipo.componentes')->where('tipo_type', 'App\Compuesto')->where('id_empresa', $request['idEmpresa'])->get();
-        $simp =  Producto::with('tipo')->where('tipo_type', 'App\Simple')->where('id_empresa', $request['idEmpresa'])->get();
-        return $com->union($simp);
-
+        return Producto::where('id_empresa', $request['id_empresa'])->get();
     }
 
     public function delete($id)

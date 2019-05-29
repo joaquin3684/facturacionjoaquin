@@ -12,7 +12,6 @@ $factory->define(App\Producto::class, function (Faker\Generator $faker) {
         'descripcion' => $faker->name,
         'pto_reposicion' => 10,
         'importe' => 100,
-        'id_ml' => null,
         'id_empresa' => 1,
         'stock' => 5,
         'impuesto' => 21,
