@@ -46,12 +46,12 @@ class ProductoController extends Controller
 
     public function find($id)
     {
-        return Producto::find($id);
+        return Producto::find($id)->toJson();
     }
 
     public function all(Request $request)
     {
-        return Producto::where('id_empresa', $request['idEmpresa'])->get();
+        return Producto::where('id_empresa', $request['idEmpresa'])->get()->map(function($p){return $p->toJson();});
     }
 
     public function delete($id)
