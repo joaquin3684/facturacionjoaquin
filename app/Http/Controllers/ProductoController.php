@@ -51,7 +51,7 @@ class ProductoController extends Controller
 
     public function all(Request $request)
     {
-        return Producto::where('id_empresa', $request['idEmpresa'])->get()->map(function($p){return $p->prodToArray($p->toArray());});
+        return Producto::where('id_empresa', $request['idEmpresa'])->get()->map(function($p){return $p->mapToFront();});
     }
 
     public function delete($id)
