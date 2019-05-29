@@ -46,8 +46,7 @@ class ProductoController extends Controller
 
     public function find($id)
     {
-        $prod = Producto::find($id);
-
+        return Producto::find($id);
     }
 
     public function all(Request $request)
