@@ -106,7 +106,12 @@ class Producto extends Model
         $json = json_encode($this->prodToArray($a));
 
         return $json;
+    }
 
+    public function mapToFront()
+    {
+        $a = $this->toArray();
+        return $this->prodToArray($a);
     }
 
     public function prodToArray(&$arr)
