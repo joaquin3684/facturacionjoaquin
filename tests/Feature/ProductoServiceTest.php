@@ -22,7 +22,6 @@ class ProductoServiceTest extends TestCase
         parent::setUp();
         $this->artisan('migrate:refresh', ['--database' => 'mysql_testing']);
         $this->artisan('db:seed', ['--class' => 'EmpresaSeeder', '--database' => 'mysql_testing']);
-
     }
 
     public function testStoreProdSimple()
@@ -94,7 +93,7 @@ class ProductoServiceTest extends TestCase
 
     }
 
-    public function testUpdateCambiandoTipo()
+    public function testUpdateCambiandoTipoDeCompuestoASimple()
     {
         $this->artisan('db:seed', ['--class' => 'ProductoSeederTest', '--database' => 'mysql_testing']);
 
@@ -115,6 +114,11 @@ class ProductoServiceTest extends TestCase
         $this->assertDatabaseHas('simples', ['id' => 3]);
         $this->assertSoftDeleted('compuestos', ['id' => 1]);
 
+    }
+
+    public function testUpdateCambiandoTipoDeSimpleACompuesto()
+    {
+        $this->artisan('db:seed', ['--class' => 'ProductoSeederTest', '--database' => 'mysql_testing']);
 
         $dataUpdate = factory(Producto::class)->make();
         $dataUpdate['componentes'] = [['idProducto' => 1, 'cantidad' => 3],['idProducto' => 2, 'cantidad' => 2]];
@@ -137,7 +141,6 @@ class ProductoServiceTest extends TestCase
         $this->assertDatabaseHas('composicion', ['id_producto' => 3, 'id_componente' => 2]);
     }
 
-
     public function testDelete()
     {
         $this->artisan('db:seed', ['--class' => 'ProductoSeederTest', '--database' => 'mysql_testing']);
@@ -148,5 +151,69 @@ class ProductoServiceTest extends TestCase
         $this->assertSoftDeleted('compuestos', ['id' => 1]);
     }
 
+    public function testDescontarStockProductoCompuesto()
+    {
+        $this->artisan('db:seed', ['--class' => 'ProductoSeederTest', '--database' => 'mysql_testing']);
 
+        $prod = Producto::find(1);
+        $prod->descontarStock(1);
+        $prod = $prod->fresh();
+
+        $simple = Producto::find(3);
+        $simple2 = Producto::find(4);
+
+        $this->assertEquals($prod->stock, 5);
+        $this->assertEquals($simple->stock, 18);
+        $this->assertEquals($simple2->stock, 17);
+    }
+
+    public function testDescontarStockProductoSuperCompuesto()
+    {
+        $this->artisan('db:seed', ['--class' => 'ProductoSeederTest', '--database' => 'mysql_testing']);
+
+        $prod = Producto::find(2);
+        $prod->descontarStock(1);
+        $prod = $prod->fresh();
+
+
+        $simple = Producto::find(3);
+        $simple2 = Producto::find(4);
+
+        $this->assertEquals($prod->stock, 1);
+        $this->assertEquals($simple->stock, 14);
+        $this->assertEquals($simple2->stock, 9);
+    }
+
+    public function testAumentarStockProductoCompuesto()
+    {
+        $this->artisan('db:seed', ['--class' => 'ProductoSeederTest', '--database' => 'mysql_testing']);
+
+        $prod = Producto::find(1);
+        $prod->aumentarStock(1);
+        $prod = $prod->fresh();
+
+        $simple = Producto::find(3);
+        $simple2 = Producto::find(4);
+
+        $this->assertEquals($prod->stock, 7);
+        $this->assertEquals($simple->stock, 22);
+        $this->assertEquals($simple2->stock, 23);
+    }
+
+    public function testAumentarStockProductoSuperCompuesto()
+    {
+        $this->artisan('db:seed', ['--class' => 'ProductoSeederTest', '--database' => 'mysql_testing']);
+
+        $prod = Producto::find(2);
+        $prod->aumentarStock(1);
+        $prod = $prod->fresh();
+
+
+        $simple = Producto::find(3);
+        $simple2 = Producto::find(4);
+
+        $this->assertEquals($prod->stock, 3);
+        $this->assertEquals($simple->stock, 26);
+        $this->assertEquals($simple2->stock, 31);
+    }
 }

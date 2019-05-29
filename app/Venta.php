@@ -31,6 +31,7 @@ class Venta extends Factura
         if($attributes['facturado'])
         {
             $this->facturaElectronica();
+            $attributes['numero'] = 1; //TOdo esto tiene que ser lo que devuelve la factura electronica
         }
         $attributes['cuit_emisor'] = Empresa::find($attributes['id_empresa'])->cuit;
         $attributes['tipo_fact'] = TipoFactura::VENTA;

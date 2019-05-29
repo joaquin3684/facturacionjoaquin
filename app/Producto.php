@@ -11,7 +11,7 @@ class Producto extends Model
 
     protected $table = 'productos';
     protected $with = ['tipo'];
-    protected $fillable = ['nombre', 'descripcion', 'pto_reposicion', 'importe', 'id_empresa', 'stock', 'tipo_type', 'tipo_id'];
+    protected $fillable = ['nombre', 'descripcion', 'pto_reposicion', 'importe', 'id_empresa', 'stock', 'tipo_type', 'tipo_id', 'impuesto'];
 
     public function tipo()
     {

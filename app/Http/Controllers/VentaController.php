@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Producto;
 use App\Venta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -12,13 +13,11 @@ class VentaController extends Controller
     {
         Db::transaction(function() use ($request){
 
-            $total = array_sum(array_map(function($item){
-                return $item['importe'];
-            }, $request['items']));
+            $items = collect($request['items']);
+            $prods = Producto::findMany($items->map(function($i){return $i['idProducto'];}));
 
-            $impuestos = array_sum(array_map(function($item){
-                return $item['impuesto'];
-            }, $request['items']));
+            $total = $prods->sum(function($p){return $p->importe;});
+            $impuestos = round($prods->sum(function($p){return $p->importe * $p->impuesto / 100;}), 2);
 
             (new Venta())->create([
                 'cuit_receptor' => $request['cuit_receptor'],
@@ -27,11 +26,9 @@ class VentaController extends Controller
                 'total_neto' => $total - $impuestos,
                 'tipo' => $request['tipo'],
                 'facturado' => $request['facturado'],
-                'ml' => $request['ml'],
-                'numero' => $request['nro'],
+                'ml' => false,
                 'fecha' => $request['fecha'],
                 'id_empresa' => $request['idEmpresa'],
-                'entregado' => $request['entregado']
             ]);
 
         });

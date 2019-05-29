@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Publicacion extends Model
 {
     protected $table = 'publicaciones';
+    protected $with = ['producto'];
 
     protected $fillable = [
         'id_ml',
@@ -40,5 +41,10 @@ class Publicacion extends Model
     {
         $this->id_producto = null;
         $this->save();
+    }
+
+    public function producto()
+    {
+        return $this->belongsTo('App\Producto', 'id_producto', 'id');
     }
 }

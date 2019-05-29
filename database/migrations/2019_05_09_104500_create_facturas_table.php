@@ -24,7 +24,7 @@ class CreateFacturasTable extends Migration
             $table->double('total_bruto');
             $table->double('total_impuestos');
             $table->double('total_neto');
-            $table->integer('numero');
+            $table->integer('numero')->nullable();
             $table->boolean('facturado');
             $table->boolean('ml');
             $table->boolean('entregado');
