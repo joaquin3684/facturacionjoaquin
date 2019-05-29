@@ -52,7 +52,7 @@ class ProductoController extends Controller
 
     public function all(Request $request)
     {
-        return Producto::where('id_empresa', $request['id_empresa'])->get();
+        return Producto::where('id_empresa', $request['idEmpresa'])->get();
     }
 
     public function delete($id)

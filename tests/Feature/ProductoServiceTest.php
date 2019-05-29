@@ -100,7 +100,6 @@ class ProductoServiceTest extends TestCase
 
         $dataUpdate = factory(Producto::class)->make();
         $prod = Producto::find(1);
-        $json = $prod->toJson();
         $prod->fill([
             'nombre' => $dataUpdate['nombre'],
             'descripcion' => $dataUpdate['descripcion'],
