@@ -99,15 +99,6 @@ class Producto extends Model
         return parent::delete();
     }
 
-    public function toJson($options = 0)
-    {
-
-        $a = $this->toArray();
-        $json = json_encode($this->prodToArray($a));
-
-        return $json;
-    }
-
     public function mapToFront()
     {
         $a = $this->toArray();

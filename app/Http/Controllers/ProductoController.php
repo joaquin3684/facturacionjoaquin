@@ -46,7 +46,7 @@ class ProductoController extends Controller
 
     public function find($id)
     {
-        return Producto::find($id)->toJson();
+        return Producto::find($id)->mapToFront();
     }
 
     public function all(Request $request)
